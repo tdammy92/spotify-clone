@@ -1,0 +1,44 @@
+{
+  "name": "spotify",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.3",
+    "@react-native-masked-view/masked-view": "^0.2.6",
+    "@react-navigation/bottom-tabs": "^6.3.1",
+    "@react-navigation/native": "^6.0.10",
+    "@react-navigation/stack": "^6.2.1",
+    "react": "17.0.2",
+    "react-native": "0.68.1",
+    "react-native-gesture-handler": "^2.4.1",
+    "react-native-linear-gradient": "^2.5.6",
+    "react-native-reanimated": "^2.8.0",
+    "react-native-redash": "^3.3.3",
+    "react-native-safe-area-context": "^4.2.5",
+    "react-native-screens": "^3.13.1",
+    "react-native-status-bar-height": "^2.6.0",
+    "react-native-vector-icons": "^9.1.0",
+    "react-redux": "^8.0.1",
+    "redux": "^4.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/runtime": "^7.17.9",
+    "@react-native-community/eslint-config": "^3.0.1",
+    "babel-jest": "^28.0.3",
+    "eslint": "^8.14.0",
+    "jest": "^28.0.3",
+    "metro-react-native-babel-preset": "^0.70.2",
+    "react-test-renderer": "17.0.2"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
