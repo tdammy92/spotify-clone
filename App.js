@@ -18,9 +18,11 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import { Provider } from 'react-redux';
 
 //Local imports
 import {RootNavigator} from './src/navigation';
+import store from './src/store/store';
 
 const App = () => {
   // const isDarkMode = useColorScheme() === 'dark';
@@ -28,12 +30,14 @@ const App = () => {
   return (
     <>
       <StatusBar
-      //  barStyle={'light-content'} 
-      //  backgroundColor={'black'} 
        translucent
         backgroundColor="transparent"
        />
+
+       <Provider store={store}>
       <RootNavigator />
+
+       </Provider>
     </>
   );
 };

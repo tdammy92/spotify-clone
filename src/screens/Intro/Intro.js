@@ -1,15 +1,54 @@
 
 //Modle imports 
-import { StyleSheet, Text, View ,ImageBackground,Image,Platform} from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View ,ImageBackground,Image,Platform,Alert} from 'react-native'
+import React,{useEffect} from 'react'
+import { useDispatch } from "react-redux";
+
+// import axios from 'axios';
+// import Auth0 from 'react-native-auth0';
+// import base64 from 'react-native-base64'
 
 
 
 //local imports 
 import {vh,vw,normalize,Button} from '../../components'
+import authHandler from '../../services/authentication';
+import {storeData} from '../../services/Db'
+import {getCurrentUser} from '../../store/userReducer'
+
+
 
 
 function Intro({navigation}){
+
+    const dispatch = useDispatch()
+
+  async  function handleLogin() {
+   const response= await authHandler.onLogin()
+   const { accessToken } = response;
+
+
+   if(accessToken){
+// console.log(accessToken);
+    storeData('accessToken',accessToken)
+    dispatch(getCurrentUser());
+       navigation.navigate('homeScreen');
+   }else{
+       Alert.alert('Authenication error','please try again',[
+        {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+         
+          },
+       ])
+   }
+   
+    }
+
+    // useEffect(() => {
+    
+    // }, [])
+    
   return (
     <View style={styles.container}>
                 <ImageBackground
@@ -34,7 +73,8 @@ function Intro({navigation}){
                             borderColor='transparent'
                             backgroundColor='#028a0f'
                             buttonText='Sign up free'
-                            onPress={() => console.log('i got clicked')}
+                            // onPress={() => console.log('i got clicked')}
+                            onPress={handleLogin}
                         />
                         <Button
                             height={Platform.OS==="ios"? 40:50}
@@ -70,10 +110,14 @@ function Intro({navigation}){
                             borderColor='grey'
                             buttonText='Continue with Apple'
                             imageSource={require('../../../assets/images/apple.png')}
-                            onPress={()=>alert('Coming Soon')}
+                            // onPress={()=>alert('Coming Soon')}
+                            onPress={handleLogin}
                         />
                     :null}
-                        <Text style={styles.loginText} onPress={() => navigation.navigate('homeScreen')}>Log in</Text>
+                        <Text style={styles.loginText} 
+                        // onPress={() => navigation.navigate('homeScreen')}
+                        onPress={handleLogin}
+                        >Log in</Text>
                         </View>
                     </View>
                 

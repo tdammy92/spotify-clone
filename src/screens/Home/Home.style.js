@@ -43,14 +43,22 @@ const styles = StyleSheet.create({
   TopGridItem:{
     // flex:1,
     flexDirection:'row',
-    width:'45%',
+    width:'47%',
     height:50,
     backgroundColor:'#202020',
     // alignItems:'center',
     marginVertical:5,
     marginHorizontal:5,
 
-  }
+  },
+  albumWrapper:{
+    marginHorizontal:10
+},
+albumTitle: {
+fontSize: TextSize.title2.fontSize,
+color: 'white',
+marginVertical: spacing.medium,
+},
  
 });
 

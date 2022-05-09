@@ -6,21 +6,30 @@ import { useNavigation } from '@react-navigation/native';
 import Song from '../Song/Song';
 import {colors, spacing, BorderRadius, TextSize} from '../../theme/theme';
 
-export default function AlbumCategory({navigation,item}) {
+export default function AlbumCategory({navigation,item,category,release}) {
   return (
-
-   
-
     <View style={styles.albumWrapper}>
       <Text style={styles.albumTitle}>{item.title}</Text>
       <View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {item.albums.map((sItem, ind) => {
+          {item.title === 'Happy Vibes' && release?.albums?.items.map((sItem, ind) => {
             return (
               <Song
-                key={`${ind}`}
-                img={sItem.imageUri}
-                title={sItem.artistsHeadline}
+                key={`${sItem.id}`}
+                img={sItem.images[0].url}
+                title={sItem.name}
+                owner={sItem?.owner?.display_name}
+        
+              />
+            );
+          })}
+          {item.title === 'Categories' && category?.categories?.items.map((sItem, ind) => {
+            return (
+              <Song
+                key={`${sItem.id}`}
+                img={sItem.icons[0].url}
+                title={sItem.name}
+        
               />
             );
           })}

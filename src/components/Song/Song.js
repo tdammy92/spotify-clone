@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import {colors, spacing, BorderRadius, TextSize} from '../../theme/theme';
 
 
-export default function Song({img, title}) {
+export default function Song({img, title,owner}) {
 
   const navigation = useNavigation();
   return (
@@ -14,7 +14,8 @@ export default function Song({img, title}) {
 
     <View style={styles.SongContainer} >
       <Image style={styles.thumbImage} source={{uri:img}} />
-      <Text  style={styles.thumbImageTitle}>{title}</Text>
+      <Text  style={styles.thumbImageTitle}>{title.substr(0,10)}</Text>
+    { owner? <Text  style={styles.thumbImageTitle}>{owner.substr(0,15)}</Text>  : null}
     </View>
 
     </TouchableWithoutFeedback>

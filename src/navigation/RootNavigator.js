@@ -1,15 +1,19 @@
-
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {NavigationContainer} from '@react-navigation/native';
 import Stack from './StackNav';
+
+import {Player} from '../components';
 
 const RootNavigator = () => {
   return (
-    <NavigationContainer>
-     <Stack/>
-    </NavigationContainer>
-  )
-}
+    <SafeAreaProvider >
+      <NavigationContainer>
+ 
+        <Stack />
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+};
 
-export default RootNavigator
-
+export default RootNavigator;
