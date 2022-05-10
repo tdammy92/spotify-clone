@@ -13,7 +13,10 @@ import ShufflePlay, {BUTTON_HEIGHT} from './ShufflePlay';
 import Header from './Header';
 
 
-export default ({y, album: {artist, name, tracks, release, duration}}) => {
+export default ({y,albumDetails}) => {
+
+
+
   const {interpolateNode, Extrapolate} = Animated;
   const {MIN_HEADER_HEIGHT, MAX_HEADER_HEIGHT, HEADER_DELTA} = useDimension();
   const navigation = useNavigation();
@@ -31,6 +34,25 @@ export default ({y, album: {artist, name, tracks, release, duration}}) => {
     // outputRange: [0, MAX_HEADER_HEIGHT],
     extrapolate: Extrapolate.CLAMP,
   });
+
+  // console.log({albumDetails})
+
+    // console.log({albumDetails})
+
+  // const artists = albumDetails?.artists;
+  // const artistname = artists[0]?.name;
+  // const name= albumDetails?.name;
+  // const items = albumDetails?.tracks?.items;
+  // const album_type = albumDetails?.album_type;
+  // const release_date = albumDetails?.release_date;
+
+  
+  // const {artists,name,tracks:{items},album_type,release_date} = albumDetails;
+  // const tracks = albumDetails?.tracks.items;
+
+  const {artists,name,tracks:{items},album_type,release_date} = albumDetails;
+  // const {artists,name,tracks:{items},album_type,release_date} = albumDetails;
+  const artistname = artists[0]?.name
 
   return (
     <Animated.ScrollView
@@ -63,33 +85,34 @@ export default ({y, album: {artist, name, tracks, release, duration}}) => {
             top: -5,
             opacity: opacity,
             paddingHorizontal: 15,
+            // zIndex:10
           }}>
           <TouchableWithoutFeedback  onPress={()=>navigation.goBack()}>
-            <Feather name="chevron-left" color="white" size={38} />
+            <Feather name="chevron-left" color="white" size={32}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback>
-            <Feather name="heart" color="white" size={38} />
+            <Feather name="heart" color="white" size={32}/>
           </TouchableWithoutFeedback>
         </Animated.View>
 
         <View style={styles.artistContainer}>
           <Animated.Text style={[styles.artist, {opacity}]}>
-            {artist}
+            {artistname}
           </Animated.Text>
           <Animated.Text style={[styles.artistDetails]}>{name}</Animated.Text>
           <Animated.Text style={[styles.artistDetails2]}>
-           Album {release} | {duration}
+          { album_type} | {release_date} 
           </Animated.Text>
         </View>
       </View>
       <View style={styles.header}>
-        <Header {...{y, artist}} />
-        <ShufflePlay />
+        <Header {...{y, artistname}} />
+        <ShufflePlay album_type={album_type}/>
       </View>
 
       <View style={styles.tracks}>
-        {tracks.map((track, key) => (
-          <Track index={key + 1} {...{track, key, artist}} />
+        {items.map((track, key) => (
+          <Track index={key + 1} {...{track, key, artistname,albumDetails}} />
         ))}
       </View>
     </Animated.ScrollView>
@@ -116,7 +139,7 @@ const styles = StyleSheet.create({
   artist: {
     textAlign: 'center',
     color: 'white',
-    fontSize: 48,
+    fontSize: 28,
     fontWeight: 'bold',
   },
   artistDetails: {

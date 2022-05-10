@@ -7,7 +7,7 @@
  */
 
 //Module Imports
-import React from 'react';
+import React,{useEffect} from 'react';
 
 import {
   SafeAreaView,
@@ -19,6 +19,7 @@ import {
   View,
 } from 'react-native';
 import { Provider } from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
 
 //Local imports
 import {RootNavigator} from './src/navigation';
@@ -26,6 +27,10 @@ import store from './src/store/store';
 
 const App = () => {
   // const isDarkMode = useColorScheme() === 'dark';
+  useEffect(() => {
+SplashScreen.hide()
+  }, [])
+  
 
   return (
     <>

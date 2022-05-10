@@ -6,12 +6,12 @@ import {
 export const BUTTON_HEIGHT = 42;
 export const BUTTON_WIDTH = 200;
 
-export default () => (
+export default ({album_type}) => (
 
   
   <TouchableWithoutFeedback>
     <View style={styles.button}>
-      <Text style={styles.label}>SHUFFLE PLAY</Text>
+      <Text style={styles.label}>{album_type==='album'? 'SHUFFLE PLAY':'PLAY'}</Text>
     </View>
   </TouchableWithoutFeedback>
 );

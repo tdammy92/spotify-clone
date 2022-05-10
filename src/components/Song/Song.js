@@ -6,11 +6,24 @@ import { useNavigation } from '@react-navigation/native';
 import {colors, spacing, BorderRadius, TextSize} from '../../theme/theme';
 
 
-export default function Song({img, title,owner}) {
+export default function Song({img, title,owner,albumId}) {
+
 
   const navigation = useNavigation();
+
+  function HandlePress() {
+
+    if (albumId) {
+
+      // console.log(albumId)
+      navigation.navigate('album',{albumId})
+      // console.log(albumId);
+    }
+  }
+
+
   return (
-    <TouchableWithoutFeedback  onPress={()=>navigation.navigate('album')}>
+    <TouchableWithoutFeedback  onPress={HandlePress}>
 
     <View style={styles.SongContainer} >
       <Image style={styles.thumbImage} source={{uri:img}} />

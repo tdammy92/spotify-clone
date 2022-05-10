@@ -83,6 +83,7 @@ function Intro({navigation}){
                             borderColor='grey'
                             buttonText='Continue with phone number'
                             imageSource={require('../../../assets/images/mobile.png')}
+                             onPress={handleLogin}
                         />
                         <Button
                             height={Platform.OS==="ios"? 40:50}
@@ -91,7 +92,8 @@ function Intro({navigation}){
                             borderColor='grey'
                             buttonText='Continue with Google'
                             imageSource={require('../../../assets/images/google.png')}
-                            onPress={()=>console.log('i was clicked')}
+                            // onPress={()=>console.log('i was clicked')}
+                             onPress={handleLogin}
                         />
                         <Button
                             height={Platform.OS==="ios"? 40:50}
@@ -100,7 +102,8 @@ function Intro({navigation}){
                             borderColor='grey'
                             buttonText='Continue with Facebook'
                             imageSource={require('../../../assets/images/facebook.png')}
-                            onPress={()=>alert('Coming Soon')}
+                            // onPress={()=>alert('Coming Soon')}
+                            onPress={handleLogin}
                         />
                         {Platform.OS==='ios'?
                         <Button

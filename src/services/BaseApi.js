@@ -19,6 +19,9 @@ const ApiEndpoints = {
   getAudioFeatures: () => {
     return `${BaseApi}/audio-features`;
   },
+  getAlbumDetails: (albumId) => {
+    return `${BaseApi}/albums/${albumId} `;
+  },
 };
 
 export {ApiEndpoints};

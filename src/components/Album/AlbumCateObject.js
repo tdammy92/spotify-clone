@@ -1,14 +1,18 @@
 export default [
     {
       id: "1",
-      title: "Happy Vibes",
+      title: "Recently Played",
     },
     {
       id: "2",
-      title: "Categories",
+      title: "New Release",
     },
     {
       id: "3",
+      title: "Categories",
+    },
+    {
+      id: "4",
       title: "Popular Playlists",
     },
   ];

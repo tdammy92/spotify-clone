@@ -9,7 +9,7 @@ import { BUTTON_HEIGHT } from "./ShufflePlay";
 
 
 
-export default ({y,album}) => {
+export default ({y,albumDetails}) => {
   
   const { interpolateNode, Extrapolate } = Animated;
 
@@ -26,11 +26,14 @@ export default ({y,album}) => {
     outputRange: [0, 0.2, 1],
     extrapolate: Extrapolate.CLAMP,
   });
+  const {images}= albumDetails
+
+
   return (
     <Animated.View style={[styles.container, { transform: [{ scale }], height: MAX_HEADER_HEIGHT + BUTTON_HEIGHT * 2 }]}>
 
 
-      <Image style={styles.image} source={{uri:album.cover}} />
+    {images &&  <Image style={styles.image} source={{uri:images[0]?.url}} />}
       <Animated.View
         style={{ ...StyleSheet.absoluteFillObject, backgroundColor: "black", opacity }}
       />

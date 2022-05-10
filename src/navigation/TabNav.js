@@ -1,15 +1,18 @@
 //module imports
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-import  React,{useEffect} from 'react';
+import React, {useEffect} from 'react';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useDispatch,useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 //local imports
 import {Player} from '../components';
-import { FetchCurrentlyPlaying,playerSelector } from '../store/playerReducer';
+import {FetchCurrentlyPlaying, playerSelector,getRecentlyPlayedSongs} from '../store/playerReducer';
+import {fetchCategories, categorySelector} from '../store/categoryReducer'
+import {fetchUserPlaylist} from '../store/playlistReducer'
+import {albumRelease, albumSelector} from '../store/albumReducer'
 
 import {Home, Search, Library, Album} from '../screens';
 import {colors, spacing, BorderRadius, TextSize} from '../theme/theme';
@@ -30,21 +33,25 @@ function HomeStack() {
 }
 
 function TabNav() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const {currentlyPlaing} = useSelector(playerSelector)
-
-
-
-  useEffect(() => {
-dispatch(FetchCurrentlyPlaying())
-  }, [])
+  const {currentlyPlaing,recentlyPlayed, showPlayer} = useSelector(playerSelector);
   
 
+  useEffect(() => {
+    dispatch(getRecentlyPlayedSongs())
+    dispatch(FetchCurrentlyPlaying());
+    dispatch(fetchUserPlaylist());
+    dispatch(fetchCategories());
+    dispatch(albumRelease());
+  }, []);
+
   // console.log({currentlyPlaing});
+  
+  // console.log(showPlayer)
   return (
     <>
-      <Player />
+  {recentlyPlayed[0]?.track && <Player />}
       <Navigator
         screenOptions={{
           headerShown: false,

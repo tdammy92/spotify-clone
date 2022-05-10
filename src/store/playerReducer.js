@@ -7,19 +7,15 @@ import axiosInstance from "../services/axiosInterceptor";
 const initialState = {
 showPlayer:false,
 recentlyPlayed:[],
-currentlyPlaing:''
+currentlyPlaing:'',
+// IsLoading:true,
 };
 
 export const PlayerSlice = createSlice({
   name: 'Player',
   initialState,
   reducers: {
-    // showPlayer: (state, action) => {
-    //   state.showPlayer = true;
-    // },
-    // hidePlayer: (state, action) => {
-    //   state.showPlayer = false;
-    // },
+
   },
 
   extraReducers: (builder) => {
@@ -27,27 +23,33 @@ export const PlayerSlice = createSlice({
     // recentyly played
     builder.addCase(getRecentlyPlayedSongs.pending, (state) => {
       state.IsLoading = true;
+      state.showPlayer = false
     });
     builder.addCase(getRecentlyPlayedSongs.fulfilled, (state, { payload }) => {
       state.recentlyPlayed = payload;
       state.IsLoading = false;
+      state.showPlayer = true
     });
     builder.addCase(getRecentlyPlayedSongs.rejected, (state) => {
       state.IsLoading = false;
       state.IsError = true;
+      state.showPlayer=false
     });
 
     // curretlyplaying
     builder.addCase(FetchCurrentlyPlaying.pending, (state) => {
       state.IsLoading = true;
+      state.showPlayer=false
     });
     builder.addCase(FetchCurrentlyPlaying.fulfilled, (state, { payload }) => {
       state.currentlyPlaing = payload;
       state.IsLoading = false;
+      state.showPlayer=true
     });
     builder.addCase(FetchCurrentlyPlaying.rejected, (state) => {
       state.IsLoading = false;
       state.IsError = true;
+      state.IsLoading = false;
     });
   },
 });
@@ -63,14 +65,11 @@ export const getRecentlyPlayedSongs = createAsyncThunk("user/recentlyPlayed", as
   const url = ApiEndpoints.getRecentlyPlayed();
 
   try {
-    // console.log("recently playing")
-      // console.log(url)
+   
     const response = await axiosInstance.get(url);
 
-   return   response.data.items
-    // console.log("******************************************************");
-    // console.log('recently played',jso);
-    // console.log("******************************************************");
+   return   response?.data?.items
+ 
   } catch (error) {
 
     // console.log("recetly played",error);
@@ -90,13 +89,13 @@ export const FetchCurrentlyPlaying = createAsyncThunk("user/currentlyplaying", a
     // console.log("currently playing")
       // console.log(url)
     const response = await axiosInstance.get(url);
-    console.log('currently plaing',response);
+    // console.log('currently plaing',response);
     return response;
 
 
   } catch (error) {
 
-    console.log('currentyly playing',error);
+    // console.log('currentyly playing',error);
     return error;
   }
 });

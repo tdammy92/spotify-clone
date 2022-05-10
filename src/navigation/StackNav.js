@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 //local imports
-import {Register, Login, Intro} from '../screens';
+import {Register, Login, Intro,PlayerScreen} from '../screens';
 import TabNav from './TabNav';
 import {getData} from '../services/Db';
 
@@ -42,6 +42,7 @@ export default function Stack() {
       {/* <Screen name="login" component={Login} />
       <Screen name="register" component={Register} /> */}
       <Screen name="homeScreen" component={TabNav} />
+      <Screen name="playerScreen" component={PlayerScreen} />
     </Navigator>
   );
 }

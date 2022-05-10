@@ -37,7 +37,7 @@ export const getCurrentUser = () => {
     try {
       const response = await axiosInstance.get("/me");
 
-      console.log(response.data)
+      // console.log(response.data)
       storeData("userData", response.data);
       storeData("userid", response.data.id);
       getUserSuccess(response.data);

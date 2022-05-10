@@ -5,7 +5,8 @@ import Home from "./Home/Home";
 import Library from "./Library/Library";
 import Search from "./Search/Search";
 import Album from "./Album/Album";
+import PlayerScreen from "./PlayerScreen/PlayerScreen";
 
 export {Register,Login,Home,Album,
-    Library,Intro,
+    Library,Intro,PlayerScreen,
     Search}

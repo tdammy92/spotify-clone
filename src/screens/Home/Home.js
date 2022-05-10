@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,12 +19,11 @@ import {colors, spacing, BorderRadius, TextSize} from '../../theme/theme';
 import DummyData from '../../services/Data/albumCategories.js';
 import TopData from '../../services/Data/TopGridData';
 import {Player, Loader, Song} from '../../components';
-
-import {removeData} from '../../services/Db';
+import {removeData,getData} from '../../services/Db';
 import styles from './Home.style';
 import {fetchUserPlaylist, playlistSelector} from '../../store/playlistReducer';
 import {fetchCategories, categorySelector} from '../../store/categoryReducer';
-import {FetchCurrentlyPlaying,getRecentlyPlayedSongs} from '../../store/playerReducer'
+import {FetchCurrentlyPlaying,getRecentlyPlayedSongs,playerSelector} from '../../store/playerReducer'
 import {albumRelease, albumSelector} from '../../store/albumReducer';
 import AlbumCateObject from '../../components/Album/AlbumCateObject';
 
@@ -75,23 +74,45 @@ function TopList({item}) {
 const Home = () => {
   const dispatch = useDispatch();
   const {IsLoading, data} = useSelector(playlistSelector);
-  const {isLoading, category} = useSelector(categorySelector);
-  const {release} = useSelector(albumSelector);
+  const {isLoading:{categoryLoading}, category} = useSelector(categorySelector);
+  const {release,isLoading:{albumLoading}} = useSelector(albumSelector);
+  const {recentlyPlayed}=  useSelector(playerSelector)
+  const [greet, setgreet] = useState('')
+  const [User, setUser] = useState({})
 
-  // function HandleAuthorization() {}
+
+
+  //check time to greet user
+function greetUser() {
+const time = new Date().getHours();
+
+if (time===0 || time<12) return setgreet('Morning');
+if (time===1 || time<17) return setgreet('Afternoon');
+setgreet('Evening')
+  
+}
+
+//function to get the currenly logged in user from Local DB
+async function getUserFromDB() {
+  const user = await getData('userData');
+  setUser(user)
+}
 
   useEffect(() => {
-    dispatch(fetchUserPlaylist());
-    dispatch(fetchCategories());
-    dispatch(albumRelease());
-    dispatch(getRecentlyPlayedSongs())
-    dispatch(FetchCurrentlyPlaying())
+    // dispatch(getRecentlyPlayedSongs())
+    // dispatch(fetchUserPlaylist());
+    // dispatch(fetchCategories());
+    // dispatch(albumRelease());
+    // dispatch(FetchCurrentlyPlaying())
+    getUserFromDB()
+    greetUser()
   }, []);
 
-  if (isLoading) {
+  if (categoryLoading  ) {
     return <Loader />;
   }
-  // console.log({release});
+  
+  
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -104,7 +125,7 @@ const Home = () => {
           <View style={styles.screenWrapper}>
             {/* Header section */}
             <View style={styles.HeaderContainer}>
-              <Text style={styles.HeaderText}>Good Morning</Text>
+              <Text style={styles.HeaderText}>Good {greet}  {User?.display_name} </Text>
 
               <View style={styles.IconWrapper}>
                 <TouchableOpacity style={{marginRight: 15}}>
@@ -141,10 +162,10 @@ const Home = () => {
             </View>
 
             {/* Body section */}
-            <View style={styles.albumConatiner}>
-              <ScrollView>
+   <View style={styles.albumConatiner}>
+            <ScrollView>
                 {/* {console.log(category.categories)} */}
-                {AlbumCateObject.map((item, i) => {
+                {AlbumCateObject?.map((item, i) => {
                   return (
                     <View key={`${'data' + i}`} style={styles.albumWrapper}>
                       <Text style={styles.albumTitle}>{item.title}</Text>
@@ -152,14 +173,29 @@ const Home = () => {
                         <ScrollView
                           showsHorizontalScrollIndicator={false}
                           horizontal={true}>
-                          {item.title === 'Happy Vibes' &&
+                   {item.title === 'Recently Played' &&
+                          recentlyPlayed?.map((sItem, ind) => {
+                            const {album,artists} = sItem?.track;
+                            {/* console.log("albumId",album?.id) */}
+                              return (
+                                <Song
+                                  key={`${"sItem"+ind}`}
+                                  img={album?.images[0]?.url}
+                                  title={artists[0]?.name}
+                                  albumId={album?.id}
+                                  // owner={sItem?.owner?.display_name}
+                                />
+                              );
+                            })} 
+                          {item.title === 'New Release' &&
                             release?.albums?.items.map((sItem, ind) => {
                               return (
                                 <Song
-                                  key={`${sItem.id}`}
-                                  img={sItem.images[0].url}
-                                  title={sItem.name}
+                                  key={`${sItem?.id}`}
+                                  img={sItem?.images[0].url}
+                                  title={sItem?.name}
                                   owner={sItem?.owner?.display_name}
+                                  // albumId={}
                                 />
                               );
                             })}
@@ -168,21 +204,23 @@ const Home = () => {
                           data?.items?.map((sItem, ind) => {
                               return (
                                 <Song
-                                  key={`${sItem.id}`}
-                                  img={sItem.images[0].url}
-                                  title={sItem.name}
+                                  key={`${sItem?.id}`}
+                                  img={sItem?.images[0].url}
+                                  title={sItem?.name}
                                   owner={sItem?.owner?.display_name}
+                                  // albumId={}
                                 />
                               );
                             })}
                        
                           {item.title === 'Categories' &&
-                            category?.categories?.items.map((sItem, ind) => {
+                            category?.categories?.items?.map((sItem, ind) => {
                               return (
                                 <Song
                                   key={`${sItem.id}`}
                                   img={sItem?.icons[0]?.url}
                                   title={sItem?.name}
+                                  // albumId={}
                                 />
                               );
                             })}

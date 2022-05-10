@@ -7,6 +7,7 @@ import axiosInstance from "../services/axiosInterceptor";
 const initialState= {
   isLoading: true,
   release: [],
+  albumDetails:{},
   isError: false,
 };
 
@@ -26,12 +27,27 @@ const albumSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
     });
+
+    //get albuim details
+    builder.addCase(getAlbumDetails.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getAlbumDetails.fulfilled, (state, { payload }) => {
+      state.albumDetails = payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getAlbumDetails.rejected, (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
   },
 });
 
 export const albumSelector = (state) => state.album;
 export default albumSlice.reducer;
 
+
+//api call to get new relese
 export const albumRelease = createAsyncThunk(
   "/browse/new-release",
   async () => {
@@ -46,3 +62,29 @@ export const albumRelease = createAsyncThunk(
     }
   }
 );
+
+
+//api call for get album details
+export const getAlbumDetails = createAsyncThunk(
+  "album/details",
+  async (albumId) => {
+
+    // console.log("from albumReducer",albumId)
+    const url = ApiEndpoints.getAlbumDetails(albumId);
+
+    try {
+      const response= await axiosInstance.get(url);
+// console.log("getalbum details api",response.data)
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+
+
+
+
+
+
